@@ -50,36 +50,32 @@ controller.authMH = async (req, res) => {
 controller.authLogin = async (req, res) => {
   let mhToken = null;
 
-  try {
-    const formData = new FormData();
+  // try {
+  //   const formData = new FormData();
 
-    console.log(process.env.PDEV_MHUSER);
-    console.log(process.env.PDEV_MHPASS);
+  //   formData.append('user', process.env.PDEV_MHUSER);
+  //   formData.append('pwd', process.env.PDEV_MHPASS);
 
-    formData.append('user', process.env.PDEV_MHUSER);
-    formData.append('pwd', process.env.PDEV_MHPASS);
-
-    const response = await axios.post(`${mhEndpoint}/seguridad/auth`, formData, {
-      headers: {
-        'Content-Type': `multipart/form-data; boundary=${formData._boundary}`,
-      },
-    })
+  //   const response = await axios.post(`${mhEndpoint}/seguridad/auth`, formData, {
+  //     headers: {
+  //       'Content-Type': `multipart/form-data; boundary=${formData._boundary}`,
+  //     },
+  //   })
     
-    const data = response.data;
-    console.log(data);
+  //   const data = response.data;
 
-    if (data?.status === "OK") {
-      const { status, body } = data;
-      const { token } = body;
-      mhToken = token;
-    }
+  //   if (data?.status === "OK") {
+  //     const { status, body } = data;
+  //     const { token } = body;
+  //     mhToken = token;
+  //   }
 
-    // res.json(data);
-  } catch (error) {
-    console.log(error);
-    console.error('No fue posible autenticar:', error);
-    // res.status(500).json({ error, errorMsg: 'Error al llamar a la API externa' });
-  }
+  //   // res.json(data);
+  // } catch (error) {
+  //   console.log(error);
+  //   console.error('No fue posible autenticar:', error);
+  //   // res.status(500).json({ error, errorMsg: 'Error al llamar a la API externa' });
+  // }
   
   req.getConnection((err, conn) => {
     if (err) res.status(500).json({ info: err });
