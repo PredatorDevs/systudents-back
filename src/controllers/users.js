@@ -63,6 +63,7 @@ const queries = {
   `
 }
 
+
 controller.find = (req, res) => {
   req.getConnection(connUtil.connFunc(queries.find, [], res));
 }
