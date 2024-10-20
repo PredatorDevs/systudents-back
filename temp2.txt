@@ -1,0 +1,153 @@
+-- =============================================
+-- Author:      Gustavo Sanchez
+-- Create Date: Nov 06 2023
+-- Description: Processing List Report
+-- =============================================
+CREATE PROCEDURE [cportal].[usp_ProcessingListV2]
+	@StartDay datetime2 = NULL,
+	@EndDay datetime2 = NULL
+WITH RECOMPILE
+AS
+BEGIN
+	SET @EndDay = DATEADD(HOUR, 23, @EndDay);
+	SET @EndDay = DATEADD(MINUTE, 59, @EndDay);
+	SET @EndDay = DATEADD(SECOND, 59, @EndDay);
+
+	IF(@StartDay IS NULL AND @EndDay IS NULL)
+	BEGIN
+		;WITH LASTBATCHES AS (
+			SELECT
+				MAX(batch.EDCBatchID) as EDCBatchID,
+				sto.StoreID,
+				sto.StoreName,
+				sto.PhoneNumber,
+				CONCAT(sto.PremiseAddress,' ',sto.City,' ',sto.State,' ',sto.PremiseZipCode) as Address,
+				dc.DailyCloseID as DailyCloseID,
+				CONVERT(varchar, dc.DailyCloseDate,1) as DailyClose,
+				DATEDIFF(HOUR, dc.DailyCloseDate, GETUTCDATE()) AS Hour,
+				dbo.fn_GetDateTimeByTimeZone(MAX(batch.BatchProcessDate), sto.TimeZone) as Date,
+				batch.BatchTotal as Amount
+			FROM 
+				Stores sto
+				INNER JOIN CloseBatch batch ON batch.EDCBatchID = (
+					SELECT MAX(trans.EDCBatchID)
+					FROM OrderTransaction trans
+					WHERE trans.StoreID = sto.StoreID
+				) AND batch.StoreID = sto.StoreID
+				INNER JOIN DailyClose dc ON batch.DailyCloseID = dc.DailyCloseID AND dc.StoreID = sto.StoreID
+			WHERE
+					DATEDIFF(
+						HOUR, 
+						dbo.fn_GetDateTimeByTimeZone(batch.BatchProcessDate, sto.TimeZone),
+						dbo.fn_GetDateTimeByTimeZone(GETUTCDATE(), sto.TimeZone)
+					) BETWEEN 72 AND 73
+				AND sto.Status = 1
+			GROUP BY
+				sto.StoreID,
+				sto.StoreName,
+				sto.PhoneNumber,
+				sto.PremiseAddress,
+				sto.City,
+				sto.State,
+				sto.PremiseZipCode,
+				batch.EDCBatchID,
+				batch.BatchProcessDate,
+				dc.DailyCloseID,
+				dc.DailyCloseDate,
+				batch.BatchTotal,
+				batch.BatchProcessDate, 
+				sto.TimeZone
+		)
+		SELECT 
+			LASTBATCHES.StoreID, 
+			LASTBATCHES.StoreName, 
+			LASTBATCHES.PhoneNumber,
+			LASTBATCHES.[Address], 
+			LASTBATCHES.DailyCloseID,
+			LASTBATCHES.DailyClose, 
+			MAX(LASTBATCHES.EDCBatchID) AS EDCBatchID, 
+			MAX(LASTBATCHES.[Date]) AS [Date], 
+			MAX(LASTBATCHES.[Hour]) AS [Hour],
+			dbo.fn_GetTransactionAmountSumByDailyClose(LASTBATCHES.DailyCloseID,LASTBATCHES.StoreID) AS [Amount]
+		FROM 
+			LASTBATCHES
+		GROUP BY 
+			LASTBATCHES.StoreID,
+			LASTBATCHES.StoreName,
+			LASTBATCHES.PhoneNumber,
+			LASTBATCHES.[Address],
+			LASTBATCHES.DailyCloseID,
+			LASTBATCHES.DailyClose
+		ORDER BY [Date];
+	END
+	ELSE
+	BEGIN 
+		;WITH LASTBATCHES AS (
+			SELECT
+				MAX(batch.EDCBatchID) as EDCBatchID,
+				sto.StoreID,
+				sto.StoreName,
+				sto.PhoneNumber,
+				CONCAT(sto.PremiseAddress,' ',sto.City,' ',sto.State,' ',sto.PremiseZipCode) as Address,
+				dc.DailyCloseID as DailyCloseID,
+				CONVERT(varchar, dc.DailyCloseDate,1) as DailyClose,
+				DATEDIFF(HOUR, dc.DailyCloseDate, GETUTCDATE()) AS Hour,
+				dbo.fn_GetDateTimeByTimeZone(MAX(batch.BatchProcessDate), sto.TimeZone) as Date,
+				batch.BatchTotal as Amount
+			FROM 
+				Stores sto
+				INNER JOIN (
+                    SELECT 
+                        MAX(trans.EDCBatchID) AS MaxEDCBatchID,
+                        trans.StoreID
+                    FROM 
+                        OrderTransaction trans
+                    GROUP BY 
+                        trans.StoreID
+                ) AS trans_max ON trans_max.StoreID = sto.StoreID
+                INNER JOIN CloseBatch batch ON batch.EDCBatchID = trans_max.MaxEDCBatchID AND batch.StoreID = sto.StoreID
+				INNER JOIN DailyClose dc ON batch.DailyCloseID = dc.DailyCloseID AND dc.StoreID = sto.StoreID
+			WHERE 
+				dbo.fn_GetDateTimeByTimeZone(batch.BatchProcessDate, sto.TimeZone) between @StartDay AND @EndDay
+				AND DATEDIFF(DAY, dbo.fn_GetDateTimeByTimeZone(batch.BatchProcessDate, sto.TimeZone), GETUTCDATE()) >= 3
+						--- AND dc.Status = 'Closed'
+				AND sto.Status = 1
+			GROUP BY 
+				sto.StoreID,
+				sto.StoreName,
+				sto.PhoneNumber,
+				sto.PremiseAddress,
+				sto.City,
+				sto.State,
+				sto.PremiseZipCode,
+				batch.EDCBatchID,
+				batch.BatchProcessDate,
+				dc.DailyCloseID,
+				dc.DailyCloseDate,
+				batch.BatchTotal,
+				batch.BatchProcessDate, 
+				sto.TimeZone
+		)
+		SELECT 
+			LASTBATCHES.StoreID, 
+			LASTBATCHES.StoreName,
+			LASTBATCHES.PhoneNumber,
+			LASTBATCHES.[Address], 
+			LASTBATCHES.DailyCloseID,
+			LASTBATCHES.DailyClose, 
+			MAX(LASTBATCHES.EDCBatchID) AS EDCBatchID, 
+			MAX(LASTBATCHES.[Date]) AS [Date], 
+			MAX(LASTBATCHES.[Hour]) AS [Hour],
+			dbo.fn_GetTransactionAmountSumByDailyClose(LASTBATCHES.DailyCloseID,LASTBATCHES.StoreID) AS [Amount]
+		FROM 
+			LASTBATCHES
+		GROUP BY 
+			LASTBATCHES.StoreID,
+			LASTBATCHES.StoreName,
+			LASTBATCHES.PhoneNumber,
+			LASTBATCHES.[Address],
+			LASTBATCHES.DailyCloseID,
+			LASTBATCHES.DailyClose;
+	END
+	
+END

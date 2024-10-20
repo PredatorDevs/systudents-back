@@ -1,0 +1,39 @@
+{
+  "name": "enapuma-back",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "./api/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./api/index.js",
+    "dev": "nodemon ./api/index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.279.0",
+    "axios": "^1.6.8",
+    "body-parser": "^1.19.2",
+    "cors": "^2.8.5",
+    "dayjs": "^1.11.10",
+    "dotenv": "^16.0.0",
+    "excel4node": "^1.8.2",
+    "express": "^4.17.3",
+    "express-fileupload": "^1.4.0",
+    "express-myconnection": "^1.0.4",
+    "ip": "^1.1.5",
+    "jsonwebtoken": "^8.5.1",
+    "morgan": "^1.10.0",
+    "mysql2": "^2.3.3",
+    "node-cron": "^3.0.3",
+    "nodemailer": "^6.9.5",
+    "nodemon": "^2.0.15",
+    "pdfkit": "^0.13.0",
+    "pdfmake": "^0.2.7",
+    "socket.io": "^4.7.4",
+    "swagger-jsdoc": "^6.2.7",
+    "swagger-ui-express": "^4.6.0",
+    "uuid": "^9.0.1"
+  }
+}

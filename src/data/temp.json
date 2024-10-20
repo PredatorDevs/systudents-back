@@ -1,0 +1,108 @@
+{
+  "emisor": {
+    "nit": "14162110721024",
+    "nrc": "1155240",
+    "correo": "dtesigpro@gmail.com",
+    "nombre": "MARIO ORESTES BENITEZ GUEVARA",
+    "telefono": "77778888",
+    "direccion": {
+      "municipio": "12",
+      "complemento": "La Union",
+      "departamento": "13"
+    },
+    "codEstable": "S001",
+    "codActividad": "46375",
+    "codEstableMH": "S001",
+    "codPuntoVenta": "P001",
+    "descActividad": "Venta al por mayor de productos lácteos",
+    "codPuntoVentaMH": "P001",
+    "nombreComercial": "MARIO ORESTES BENITEZ GUEVARA",
+    "tipoEstablecimiento": "02"
+  },
+  "resumen": {
+    "pagos": null,
+    "ivaRete1": 0.0,
+    "subTotal": 0.01,
+    "totalIva": 0.01,
+    "tributos": null,
+    "reteRenta": 0,
+    "descuNoSuj": 0,
+    "saldoFavor": 0,
+    "totalDescu": 0,
+    "totalNoSuj": 0,
+    "totalPagar": 0.01,
+    "descuExenta": 0,
+    "totalExenta": 0.01,
+    "totalLetras": "CERO (1/100) DOLARES",
+    "descuGravada": 0,
+    "totalGravada": 0.01,
+    "subTotalVentas": 0.01,
+    "totalNoGravado": 0.01,
+    "condicionOperacion": 1,
+    "numPagoElectronico": null,
+    "montoTotalOperacion": 0.01,
+    "porcentajeDescuento": 0
+  },
+  "apendice": null,
+  "receptor": {
+    "nrc": null,
+    "correo": "sanchezgustavosg@gmail.com",
+    "nombre": "GUSTAVO ALFREDO SANCHEZ ROMERO",
+    "telefono": "72474076",
+    "direccion": {
+      "municipio": "17",
+      "complemento": "COL CIUDAD PACIFICA POL B 20 CASA 1",
+      "departamento": "12"
+    },
+    "codActividad": null,
+    "numDocumento": "06021764-1",
+    "descActividad": null,
+    "tipoDocumento": "13"
+  },
+  "extension": {
+    "docuRecibe": "06021764-1",
+    "nombRecibe": "GUSTAVO ALFREDO SANCHEZ ROMERO",
+    "docuEntrega": null,
+    "nombEntrega": "Gustavo Sánchez",
+    "observaciones": "",
+    "placaVehiculo": null
+  },
+  "ventaTercero": null,
+  "identificacion": {
+    "fecEmi": "2024-04-03",
+    "horEmi": "15:27:39",
+    "tipoDte": "01",
+    "version": 1,
+    "ambiente": "01",
+    "tipoModelo": 1,
+    "tipoMoneda": "USD",
+    "motivoContin": null,
+    "numeroControl": "DTE-01-S001P001-000000000000000",
+    "tipoOperacion": 1,
+    "codigoGeneracion": "92D39FC1-F201-11EE-9117-0216BBD4F2E7",
+    "tipoContingencia": null
+  },
+  "cuerpoDocumento": [
+    {
+      "psv": 0.01,
+      "codigo": "789",
+      "ivaItem": 0.01,
+      "numItem": 1,
+      "cantidad": 1.0,
+      "tipoItem": 2,
+      "tributos": null,
+      "noGravado": 0,
+      "precioUni": 0.01,
+      "uniMedida": 59,
+      "codTributo": null,
+      "montoDescu": 0,
+      "ventaNoSuj": 0,
+      "descripcion": "ARRENDAMIENTO",
+      "ventaExenta": 0.01,
+      "ventaGravada": 0.01,
+      "numeroDocumento": null
+    }
+  ],
+  "otrosDocumentos": null,
+  "documentoRelacionado": null
+}

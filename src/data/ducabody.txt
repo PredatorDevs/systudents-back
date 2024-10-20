@@ -1,0 +1,186 @@
+{
+  "ducaf": {
+    "reference": "",
+    "docNumber": "",
+    "approvalDate": "2022-01-01 00:00:00",
+    "registrationCustom": "",
+    "departureCustom": "",
+    "entryCustom": "",
+    "destinationCustom": "",
+    "customRegime": "",
+    "modality": "",
+    "class": "",
+    "expirationDate": "2022-01-01 00:00:00",
+    "originCountry": "",
+    "exportCountry": "",
+    "destinationCountry": "",
+    "customWarehouse": "",
+    "boardingPlace": "",
+    "landingPlace": "",
+    "transactionValue": 0.00,
+    "transportationCosts": 0.00,
+    "insuranceCosts": 0.00,
+    "otherCosts": 0.00,
+    "customTotalValue": 0.00,
+    "incoterm": 0.00,
+    "exchangeRate": 0.00,
+    "totalGrossWeight": 0.00,
+    "totalNetWeight": 0.00,
+    "notes": "",
+    "validUntil": "2022-01-01 00:00:00",
+    "exporterCode": ""
+  },
+  "ducafExporters": {
+    "identifier": "",
+    "identifierType": "",
+    "countryOfIssue": "",
+    "bussinessName": "",
+    "taxResidence": ""
+  },
+  "ducafImporters": {
+    "identifier": "",
+    "identifierType": "",
+    "countryOfIssue": "",
+    "bussinessName": "",
+    "taxResidence": ""
+  },
+  "ducafDeclarants": {
+    "code": "",
+    "identifier": "",
+    "bussinessName": "",
+    "taxResidence": ""
+  },
+  "ducafCarriers": {
+    "code": "",
+    "name": "varchar(30)",
+    "transportMode": "varchar(30)"
+  },
+  "ducafDrivers": {
+    "identifier": "",
+    "license": "",
+    "licenseExpeditionCountry": "",
+    "fullname": ""
+  }
+}
+
+Table ducafTransportUnits {
+  id int [increment, pk, not null]
+  ducafId int [not null]
+  // 24
+  identifier varchar(50) [note: 'Identificación de la unidad de transporte']
+  registrationCountry varchar(50) [note: 'País de registro']
+  brand varchar(50) [note: 'Marca']
+  chasis varchar(50) [note: 'Chasis/Vin']
+  trailerIdentifier varchar(50) [note: 'Identificación del remolque o semirremolque']
+  trailerQuantity decimal(18, 2) [note: 'Candiad de unidades de carga (remolque o semirremolques)']
+  deviceNumber varchar(50) [note: 'Número de dispositivo o de seguridad (precintos)']
+  equipment varchar(128) [note: 'Equipamiento']
+  equipmentSize decimal(18, 2) [note: 'Tamaño del equipamiento']
+  chargeType varchar(18) [note: 'Tipo de carga']
+  containerIdentifiers varchar(128) [note: 'Número de Identificación del contenedor']
+}
+
+Ref: ducafTransportUnits.id > ducaf.id
+
+Table ducafGeneralLiquidations {
+  id int [increment, pk, not null]
+  ducafId int [not null]
+  // 34
+  typeOfTribute varchar(30) [note: 'Tipo de tributo']
+  totalTribute decimal(18, 2) [note: 'Total por tributo']
+  paymentMethod varchar(30) [note: 'Modalidad pago']
+  total decimal(18, 2) [note: 'Total general']
+}
+
+Ref: ducafGeneralLiquidations.id > ducaf.id
+
+Table ducafGoods {
+  id int [increment, pk, not null]
+  ducafId int [not null]
+  // 35
+  packageQuantity decimal(18, 2) [note: 'Cantidad de bultos']
+  // 36
+  packageClass varchar(50) [note: 'Clase de bultos']
+  // 37
+  netWeight decimal(18, 2) [note: 'Peso neto']
+  // 38
+  grossWeight decimal(18, 2) [note: 'Peso bruto']
+  // 39
+  contingentFee decimal(18, 2) [note: 'Cuota contingente']
+  // 40
+  lineNumber decimal(18, 2) [note: 'Número de línea']
+  // 41
+  originCountry varchar(50) [note: 'País de origen']
+  // 42
+  measurementUnit varchar(50) [note: 'Unidad de medida']
+  // 43
+  quantity decimal(18, 2) [note: 'Cantidad']
+  // 44
+  agreement varchar(30) [note: 'Acuerdo']
+  // 45
+  tariffClasification varchar(50) [note: 'Clasificación arancelaria']
+  // 46
+  description varchar(256) [note: 'Descripción de las mercancías']
+  // 47
+  originCertifyCriteria varchar(10) [note: 'Criterio para certificar origen']
+  accesoryRules varchar(10) [note: 'Reglas accesorias']
+  // 48
+  transactionValue decimal(18, 2) [note: 'Valor de transacción']
+  // 49
+  transportationCosts decimal(18, 2) [note: 'Gastos de transporte']
+  // 50
+  insuranceCosts decimal(18, 2) [note: 'Seguro']
+  // 51
+  otherCosts decimal(18, 2) [note: 'Otros gastos']
+  // 52
+  customValue decimal(18, 2) [note: 'Valor en aduana']
+}
+
+Ref: ducafGoods.id > ducaf.id
+
+Table ducafLineLiquidations {
+  id int [increment, pk, not null]
+  ducafId int [not null]
+  // 53
+  type varchar(30) [note: '']
+  rate decimal(18, 2) [note: '']
+  subTotal decimal(18, 2) [note: '']
+  MP varchar(50) [note: '']
+  total decimal(18, 2) [note: '']
+}
+
+Ref: ducafLineLiquidations.id > ducaf.id
+
+Table ducafSupportDocuments {
+  id int [increment, pk, not null]
+  ducafId int [not null]
+  // 54 -- Support Documents
+  codeType varchar(10) [note: '']
+  number varchar(30) [note: '']
+  issueDate date [note: '']
+  expirationDate date [note: '']
+  originCountry varchar(50) [note: '']
+  line varchar(10) [note: '']
+  issuedBy varchar(256) [note: '']
+  total decimal(18, 2) [note: '']
+}
+
+Ref: ducafSupportDocuments.id > ducaf.id
+
+
+-- NUMERO DE POLIZA - 2
+-- Todos los valores totales - 25 - 26 - 27 - 29 - 30 - 31 Se van a ingresar manualmente
+-- 46 desplegable con los productos
+-- 42 UNIDAD DE MEDIDA EN LIBRAS
+-- 43 ALIMENTA EL INVENTARIO - Cantidad
+-- Una casilla para definir el costo por libra
+
+-- Libro de gastos en el menú principal
+-- Descripción
+-- Tipos o catálogo de gastos
+-- Gasto Bodega / Gasto planta
+
+-- Menú Principal: [ Pólizas, Facturación, Gastos, Reportes, Administrativo ]
+
+-- Cuentas por cobrar
+-- Añadir un método de pago
